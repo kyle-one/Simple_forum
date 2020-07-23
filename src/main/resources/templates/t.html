@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>从数据库获取标题</title>
+    <title th:text="${question.getTitle()}"></title>
     <!--bootstrap css-->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
@@ -44,7 +44,12 @@
                     </div>
                     <hr style="margin-bottom: 0px;"/>
                     <nav aria-label="bottom_view" style="background-color: #e9ecef;">
-                        <p class="text-right" style="margin-top: 10px; margin-bottom: 10px;margin-right: 10px; color: #6c757d;">浏览量：<span th:text="${question.getView_count()}"></span></p>
+                        <div class="d-flex justify-content-between">
+                            <div th:if="${question.getCreateId()}">
+                                <p class="text-left" style="margin-top: 10px;margin-bottom: 10px;margin-left: 10px;color: #6c757d;" th:href="@{/delete}">删除</p>
+                            </div>
+                            <p class="text-right" style="margin-top: 10px;margin-bottom: 10px;margin-right: 10px;color: #6c757d;">浏览量：<span th:text="${question.getView_count()}"></span></p>
+                        </div>
                     </nav>
                 </div>
 <!--                回复card-->
@@ -58,12 +63,15 @@
 
                             <tr th:each="c:${commentList}" style="font-size: 15px; margin-top: 5px;margin-bottom: 5px">
                                 <hr class="divider"/>
-                                <img src="/img/ava.png" class="ml-3 mr-3" style="height: 54px;width: 54px;" alt="avatar-big">
-                                <!-- 通过得到当前c的索引，根据索引从user里面取值-->
-                                <td th:text="${userList.get(commentList.indexOf(c)).getName()}" style="font-size: 15px; margin-top: 5px;margin-bottom: 5px"></td>
-                                <br>
-                                <td th:text="${c.getContent()}" style="width:100px;word-wrap:break-word;font-size: 15px; margin-top: 5px;margin-bottom: 5px"></td>
-
+                                <div class="media">
+                                    <img src="/img/ava.png" class="ml-3 mr-3" style="height: 54px;width: 54px;" alt="avatar-big">
+                                    <div class="media-body">
+                                        <!-- 通过得到当前c的索引，根据索引从user里面取值-->
+                                        <h6 th:text="${userList.get(commentList.indexOf(c)).getName()}" class="mt-1" style="color: #838383;font-weight:bold;"></h6>
+<!--                                        <br>-->
+                                        <span class="post_title" th:text="${c.getContent()}"></span>
+                                    </div>
+                                </div>
                             </tr>
                         </div>
                     </div>
@@ -98,6 +106,6 @@
 
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>
